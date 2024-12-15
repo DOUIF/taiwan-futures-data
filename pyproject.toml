@@ -1,0 +1,46 @@
+[tool.poetry]
+name = "taiwan-futures-data"
+version = "0.1.0"
+description = ""
+authors = ["DOUIF <a15975345678@gmail.com>"]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.12"
+python-dotenv = "^1.0.1"
+requests = "^2.32.3"
+pandas = "^2.2.3"
+lxml = "^5.3.0"
+html5lib = "^1.1"
+beautifulsoup4 = "^4.12.3"
+pydantic = "^2.10.3"
+
+
+[tool.poetry.group.dev.dependencies]
+flake8 = "^7.1.1"
+flake8-pyproject = "^1.2.3"
+black = "^24.10.0"
+ipykernel = "^6.29.5"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.flake8]
+max-line-length = 100
+per-file-ignores = [
+    '__init__.py:F401',
+    # No need to traverse these directory
+    ".git",
+    ".venv",
+    # There's no value in checking cache directories
+    "__pycache__",
+]
+
+[tool.black]
+line-length = 100
+
+[tool.isort]
+profile = "black"
