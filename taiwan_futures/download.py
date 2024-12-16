@@ -43,10 +43,11 @@ def download_futures_data() -> None:
         for f in local_files:
             f.unlink()
 
-        zip_file_name = (
+        zip_file_name = ZIP_DIR / (
             info.date.strftime(ZIP_DATE_FORMAT)
             + "_"
             + info.updated_time.strftime(ZIP_UPDATED_TIME_FORMAT)
+            + ".zip"
         )
         is_success = _download_single_data(info.download_url, zip_file_name)
 
@@ -114,13 +115,13 @@ def _is_local_zip_outdated(local_file: Path, info: OnlineZipInfo) -> bool:
 
 def _download_single_data(
     url: str,
-    filename: str = "test",
+    filename: str,
 ) -> bool:
     response = requests.get(url, stream=True, allow_redirects=False)
     if response.status_code != 200:
         return False
 
-    with open(ZIP_DIR / (filename + ".zip"), "wb") as f:
+    with open(filename, "wb") as f:
         for chunk in response.iter_content():
             f.write(chunk)
 
