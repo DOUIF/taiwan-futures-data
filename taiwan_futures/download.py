@@ -1,15 +1,11 @@
-import os
 from datetime import date, datetime
 from pathlib import Path
 
 import pandas as pd
 import requests
-from dotenv import load_dotenv
 from pydantic import BaseModel
 
 from taiwan_futures.transform import transform_zip_to_csv
-
-load_dotenv()
 
 
 class OnlineZipInfo(BaseModel):
@@ -18,8 +14,8 @@ class OnlineZipInfo(BaseModel):
     download_url: str
 
 
-ZIP_URL = os.getenv("ZIP_URL")
-MAIN_URL = os.getenv("MAIN_URL")
+ZIP_URL = "https://www.taifex.com.tw/file/taifex/Dailydownload/DailydownloadCSV/Daily_{}.zip"
+MAIN_URL = "https://www.taifex.com.tw/cht/3/dlFutPrevious30DaysSalesData"
 ZIP_DIR = Path.cwd() / "data" / "zip"
 ZIP_DIR.mkdir(exist_ok=True, parents=True)
 CSV_DIR = Path.cwd() / "data" / "csv"
