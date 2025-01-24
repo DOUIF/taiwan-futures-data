@@ -36,24 +36,30 @@ jobs:
 
       # Step 5: Check if there are any changes in the data folder
       - name: Check for Changes
+        id: check_changes
         run: |
           if [ -z "$(git status --porcelain data/)" ]; then
-            echo "No changes in data folder, skipping commit."
+            echo "No changes in data folder, skipping workflow."
+            echo "HAS_CHANGES=false" >> $GITHUB_ENV
             exit 0
           fi
+          echo "HAS_CHANGES=true" >> $GITHUB_ENV
 
       # Step 6: Configure Git user information
       - name: Configure Git
+        if: env.HAS_CHANGES == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       # Step 7: Commit the changes
       - name: Commit Changes
+        if: env.HAS_CHANGES == 'true'
         run: |
           git add data/
           git commit -m "⚙ auto: Update data on $(date +'%Y-%m-%d %H:%M:%S')"
 
       # Step 8: Push the changes to the history-data branch
       - name: Push Changes
+        if: env.HAS_CHANGES == 'true'
         run: git push origin history-data
